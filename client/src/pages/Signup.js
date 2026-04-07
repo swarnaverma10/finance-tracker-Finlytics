@@ -13,19 +13,19 @@ export default function Signup() {
     setError("");
 
     if (!form.name.trim()) {
-      setError("Name required hai ❌");
+      setError("Name is required ❌");
       return;
     }
     if (!form.email.trim()) {
-      setError("Email required hai ❌");
+      setError("Email is required ❌");
       return;
     }
     if (form.password.includes(" ")) {
-      setError("Password mein spaces allowed nahi hain ❌");
+      setError("Spaces are not allowed in password❌");
       return;
     }
     if (form.password.length < 6) {
-      setError("Password kam se kam 6 characters ka hona chahiye ❌");
+      setError("Password must be at least 6 characters long ❌");
       return;
     }
 
