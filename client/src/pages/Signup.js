@@ -11,13 +11,35 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!form.name.trim()) {
+      setError("Name required hai ❌");
+      return;
+    }
+    if (!form.email.trim()) {
+      setError("Email required hai ❌");
+      return;
+    }
+    if (form.password.includes(" ")) {
+      setError("Password mein spaces allowed nahi hain ❌");
+      return;
+    }
+    if (form.password.length < 6) {
+      setError("Password kam se kam 6 characters ka hona chahiye ❌");
+      return;
+    }
+
     setLoading(true);
     try {
       const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
       const res = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          password: form.password,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -49,7 +71,6 @@ export default function Signup() {
       overflow: 'hidden',
       position: 'relative',
     }}>
-      {/* Floating orbs */}
       <motion.div
         animate={{ y: [0, -35, 0], scale: [1, 1.07, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -81,7 +102,6 @@ export default function Signup() {
         }}
       />
 
-      {/* Card */}
       <motion.div
         initial={{ opacity: 0, y: 32, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -99,14 +119,12 @@ export default function Signup() {
           zIndex: 1,
         }}
       >
-        {/* Top shimmer */}
         <div style={{
           position: 'absolute', top: 0, left: '25%', right: '25%',
           height: '1px',
           background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.55), transparent)',
         }} />
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -142,7 +160,6 @@ export default function Signup() {
           </p>
         </motion.div>
 
-        {/* Error */}
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
@@ -159,7 +176,6 @@ export default function Signup() {
           </motion.div>
         )}
 
-        {/* Form */}
         <motion.form
           onSubmit={handleSignup}
           initial={{ opacity: 0 }}

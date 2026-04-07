@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');  // ✅ FIXED
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = process.env.JWT_SECRET || "finance_secret_key_123";
@@ -9,12 +9,26 @@ router.post('/signup', async (req, res) => {
   console.log("🔥 SIGNUP HIT");
   try {
     const { name, email, password } = req.body;
-    const existing = await User.findOne({ email });
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ message: "Name required hai" });
+    }
+    if (!email || !email.trim()) {
+      return res.status(400).json({ message: "Email required hai" });
+    }
+    if (password.includes(' ')) {
+      return res.status(400).json({ message: "Password mein spaces allowed nahi hain ❌" });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password kam se kam 6 characters ka hona chahiye" });
+    }
+
+    const existing = await User.findOne({ email: email.trim() });
     if (existing) {
       return res.status(400).json({ message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ name: name.trim(), email: email.trim(), password: hashedPassword });
     await user.save();
     res.json({ message: "Signup successful" });
   } catch (err) {
