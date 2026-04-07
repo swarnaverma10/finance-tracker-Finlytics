@@ -13,7 +13,7 @@ export default function Signup() {
     setError("");
 
     if (!form.name.trim()) {
-      setError("Name is required ❌");
+      setError("Full name is required ❌");
       return;
     }
     if (!form.email.trim()) {
@@ -21,7 +21,7 @@ export default function Signup() {
       return;
     }
     if (form.password.includes(" ")) {
-      setError("Spaces are not allowed in password❌");
+      setError("Password cannot contain spaces ❌");
       return;
     }
     if (form.password.length < 6) {
