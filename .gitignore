@@ -1,6 +1,9 @@
 node_modules/
+**/node_modules/
 .env
+**/.env
 .env.local
+**/.env.local
 .DS_Store
 dist/
 build/
@@ -10,4 +13,5 @@ yarn-error.log*
 .vercel
 venv/
 __pycache__/
+*.pyc
 *.db
